@@ -88,7 +88,7 @@ export default function Edit() {
           />
           <input
             type="text"
-            placeholder="Video ID or Brightcove URL"
+            placeholder="Yotube Video ID or Brightcove URL"
             value={inputId}
             onChange={(e) => setInputId(e.target.value)}
             style={{
