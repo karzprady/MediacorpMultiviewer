@@ -1,4 +1,4 @@
-FROM node:alpine3.18 as build
+FROM node:alpine3.18 AS build
 
 # Declare build time environment variables
 
@@ -19,6 +19,6 @@ RUN npm run build
 FROM nginx:1.23-alpine
 WORKDIR /usr/share/nginx/html
 RUN rm -rf *
-COPY --from=build /app/build .
-EXPOSE 80
+COPY --from=build /app/dist .
+
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
