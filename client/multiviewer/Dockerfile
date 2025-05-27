@@ -22,7 +22,7 @@ RUN npm run build
 FROM nginx:1.23-alpine
 
 # Copy custom nginx config (handles React Router fallback)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY multiviewer/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Clean default static files and add new ones
 WORKDIR /usr/share/nginx/html
