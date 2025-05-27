@@ -19,8 +19,9 @@ jobs:
       - name: Publish Backend Image  to docker hub
         run: docker push karz224/mern-app:latest 
       - name: Build Docker Frontend Image 
-        working-directory: ./client/multiviewer
-        run: docker build --build-arg VITE_API=${{ secrets.VITE_API }} -t karz224/mern-app-fe .
+        
+        run: docker build --build-arg VITE_API=${{ secrets.VITE_API }} -t karz224/mern-app-fe ./client/multiviewer
+
 
       - name: Publish Frontend Image to docker hub
         run: docker push karz224/mern-app-fe:latest 
