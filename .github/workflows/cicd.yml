@@ -20,7 +20,8 @@ jobs:
         run: docker push karz224/mern-app:latest 
       - name: Build Docker Frontend Image 
         working-directory: ./client/multiviewer
-        run: docker build -t karz224/mern-app-fe  .
+        run: docker build --build-arg VITE_API=${{ secrets.VITE_API }} -t karz224/mern-app-fe .
+
       - name: Publish Frontend Image to docker hub
         run: docker push karz224/mern-app-fe:latest 
  
@@ -39,4 +40,4 @@ jobs:
       - name: Run Docker Backend Container
         run: docker run -d -p 3000:3000 --name mern-app-container -e MONGO_URI='${{ secrets.MONGO_URI }}' karz224/mern-app
       - name: Run Docker Frontend Container
-        run: docker run -d -p 80:80 --name mern-app-fe-container -e VITE_API='${{ secrets.VITE_API }}' karz224/mern-app-fe
+        run: docker run -d -p 80:80 --name mern-app-fe-container  karz224/mern-app-fe
