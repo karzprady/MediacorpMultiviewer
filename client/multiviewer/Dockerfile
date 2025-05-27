@@ -1,24 +1,36 @@
-FROM node:alpine3.18 AS build
+# Stage 1: Build with Vite
+FROM node:18-alpine AS build
 
-# Declare build time environment variables
-
+# Accept VITE_API as a build-time argument
 ARG VITE_API
-
-# Set default values for environment variables
-
 ENV VITE_API=$VITE_API
 
-# Build App
+# Set working directory
 WORKDIR /app
-COPY package.json .
+
+# Install dependencies
+COPY package*.json ./
 RUN npm install
+
+# Copy source code
 COPY . .
+
+# Build the Vite app
 RUN npm run build
 
-# Serve with Nginx
+# Stage 2: Serve with Nginx
 FROM nginx:1.23-alpine
+
+# Copy custom nginx config (handles React Router fallback)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Clean default static files and add new ones
 WORKDIR /usr/share/nginx/html
-RUN rm -rf *
+RUN rm -rf ./*
 COPY --from=build /app/dist .
+
+# Expose HTTP port
 EXPOSE 80
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
